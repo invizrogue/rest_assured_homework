@@ -1,5 +1,6 @@
 package study.qa;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -10,6 +11,7 @@ public class ReqresInTests {
     String BASE_URL = "https://reqres.in";
 
     @Test
+    @DisplayName("Проверка, что количество ресурсов на странице меньше или равно шести")
     void checkCountItemsPerPageInResourcesListTest() {
         given()
                 .log().uri()
@@ -24,6 +26,8 @@ public class ReqresInTests {
     }
 
     @Test
+    @DisplayName("Проверка, что регистрация успешна и выданный токен содержит строку" +
+            "из букв или цифр длиной 17 символов")
     void checkSuccessfulRegisterTest() {
         String testData = "{\"email\":\"eve.holt@reqres.in\", \"password\":\"pistol\"}";
 
@@ -42,6 +46,7 @@ public class ReqresInTests {
     }
 
     @Test
+    @DisplayName("Проверка, что необъявленные раннее пользователи регистрироваться не могут")
     void checkUndefinedUserRegisterTest() {
         String testData = "{\"email\":\"test@test.tt\", \"password\":\"pa$$w0rd\"}";
 
@@ -60,6 +65,7 @@ public class ReqresInTests {
     }
 
     @Test
+    @DisplayName("Проверка кода ответа 204 при удалении пользователя")
     void checkDeleteUserTest() {
         given()
                 .log().uri()
@@ -73,6 +79,7 @@ public class ReqresInTests {
     }
 
     @Test
+    @DisplayName("Проверка, что id в строке запроса равен id пользователя в теле ответа")
     void checkSingleResourceTest() {
         int testId = 3;
 
@@ -89,6 +96,7 @@ public class ReqresInTests {
     }
 
     @Test
+    @DisplayName("Проверка, что нет ресурса с id=0")
     void checkNotFoundResourceTest() {
         given()
                 .log().uri()
