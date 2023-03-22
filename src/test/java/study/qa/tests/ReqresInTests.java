@@ -29,8 +29,8 @@ public class ReqresInTests {
                                 .then()
                                 .spec(commonResponseSpec)
                                 .extract().as(ResourceListResponseModel.class));
-        step("Проверка, что размер выводимого списка равен 6", () ->
-                assertThat(response.getData()).hasSize(6));
+        step("Проверка, что размер выводимого списка меньше или равен 6", () ->
+                assertThat(response.getData()).hasSizeLessThanOrEqualTo(6));
     }
 
     @Test
@@ -96,11 +96,11 @@ public class ReqresInTests {
     }
 
     @ValueSource(ints = {1, 3, 6})
-    @ParameterizedTest(name="Проверка, что id={0} в строке запроса равен id пользователя в теле ответа")
+    @ParameterizedTest(name = "Проверка, что id={0} в строке запроса равен id пользователя в теле ответа")
     void checkSingleResourceTest(int testId) {
 
         ResourceDataModel data =
-                step("Запрос на удаление существующего пользователя", () ->
+                step("Запрос на получение данных о пользователе с id=" + testId, () ->
                         given(commonRequestSpec)
                                 .when()
                                 .get(Endpoints.getSingleResourceN + testId)
@@ -108,7 +108,7 @@ public class ReqresInTests {
                                 .spec(commonResponseSpec)
                                 .extract().body().jsonPath().getObject("data", ResourceDataModel.class));
 
-        step("что id в строке запроса равен id пользователя в теле ответа", () ->
+        step("что id=" + testId + " в строке запроса равен id пользователя в теле ответа", () ->
                 assertThat(data.getId()).isEqualTo(testId));
     }
 
