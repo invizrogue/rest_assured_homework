@@ -1,4 +1,4 @@
-# Автоматизация тестирования <a href="https://reqres.in" target="_blank"><img src="readme/images/reqres.png" width="50" height="50"></a>
+# Автоматизация тестирования <a href="https://reqres.in" target="_blank"><img src="readme/images/reqres.png" width="100" height="50"></a>
 
 ## :scroll: Содержание
 - [Технологии и инструменты](#pushpin-технологии-и-инструменты)
@@ -41,7 +41,7 @@
 - <code>ENV</code> окружение, в котором запускаютя тесты, по умолчанию remote
 
 ## :pushpin: Задача в Jenkins
-<a href="https://jenkins.autotests.cloud/job/C17-dmikhaylov_ru-owner17/"><img src="readme/screenshots/jenkins.png" alt="Задача в jenkins"></a>
+<a href="https://jenkins.autotests.cloud/job/C17-dmikhaylov_ru-restassured19/"><img src="readme/screenshots/jenkins.png" alt="Задача в jenkins"></a>
 
 ## :pushpin: Отчёт Allure
 <img src="readme/screenshots/allure_overview.png" alt="Allure_overview"/>
