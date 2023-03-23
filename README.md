@@ -41,7 +41,7 @@
 - <code>ENV</code> окружение, в котором запускаютя тесты, по умолчанию remote
 
 ## :pushpin: Задача в Jenkins
-<a href="https://jenkins.autotests.cloud/job/C17-dmikhaylov_ru-restassured19/"><img src="readme/screenshots/jenkins.png" alt="Задача в jenkins"></a>
+<a href="https://jenkins.autotests.cloud/job/C17-dmikhaylov_ru-lambdaGroovy/"><img src="readme/screenshots/jenkins.png" alt="Задача в jenkins"></a>
 
 ## :pushpin: Отчёт Allure
 <img src="readme/screenshots/allure_overview.png" alt="Allure_overview"/>
