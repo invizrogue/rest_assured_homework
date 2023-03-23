@@ -4,15 +4,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import study.qa.model.RegisterRequestModel;
-import study.qa.model.RegisterResponseModel;
-import study.qa.model.ResourceDataModel;
-import study.qa.model.ResourceListResponseModel;
+import study.qa.model.*;
 import study.qa.specs.Endpoints;
+
+import java.util.List;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static study.qa.specs.ReqresSpec.*;
 
 public class ReqresInTests {
@@ -22,13 +23,13 @@ public class ReqresInTests {
     void checkCountItemsPerPageInResourcesListTest() {
         ResourceListResponseModel response =
                 step("Запрос на загрузку списка ресурсов", () ->
-
                         given(commonRequestSpec)
                                 .when()
                                 .get(Endpoints.getListResource)
                                 .then()
                                 .spec(commonResponseSpec)
                                 .extract().as(ResourceListResponseModel.class));
+
         step("Проверка, что размер выводимого списка меньше или равен 6", () ->
                 assertThat(response.getData()).hasSizeLessThanOrEqualTo(6));
     }
@@ -81,7 +82,6 @@ public class ReqresInTests {
     @Test
     @DisplayName("Проверка кода ответа 204 при удалении пользователя")
     void checkDeleteUserTest() {
-
         Integer status =
                 step("Запрос на удаление существующего пользователя", () ->
                         given(commonRequestSpec)
@@ -98,7 +98,6 @@ public class ReqresInTests {
     @ValueSource(ints = {1, 3, 6})
     @ParameterizedTest(name = "Проверка, что id={0} в строке запроса равен id пользователя в теле ответа")
     void checkSingleResourceTest(int testId) {
-
         ResourceDataModel data =
                 step("Запрос на получение данных о пользователе с id=" + testId, () ->
                         given(commonRequestSpec)
@@ -126,5 +125,37 @@ public class ReqresInTests {
 
         step("Проверка, что код ответа равен 404", () ->
                 assertThat(status).isEqualTo(404));
+    }
+
+    @Test
+    @DisplayName("Проверка формата параметров data")
+    void checkDataParametersFormatTest() {
+        List<ResourceDataModel> response =
+                step("Запрос на загрузку списка ресурсов", () ->
+                        given(commonRequestSpec)
+                                .when()
+                                .get(Endpoints.getListResource)
+                                .then()
+                                .spec(commonResponseSpec)
+                                .extract().body().jsonPath().getList("data", ResourceDataModel.class));
+
+        step("pantone_value соответствует формату \\d{2}-\\d{4}", () ->
+                response.forEach(x -> assertTrue(x.getPantoneValue().matches("\\d{2}-\\d{4}"))));
+        step("name состоит из символов английского алфавита и символа пробела", () ->
+                response.forEach(x -> assertTrue(x.getName().matches("^[a-z ]+$"))));
+    }
+
+    @Test
+    @DisplayName("Проверка списка data на наличие аватара 10-image.jpg")
+    public void checkExistsAvatarTest() {
+        step("Запрос на загрузку списка пользователей" +
+                "и проверка наличия аватара в списке", () ->
+                given(commonRequestSpec)
+                        .when()
+                        .get(Endpoints.getListUsersP + 2)
+                        .then()
+                        .spec(commonResponseSpec)
+                        .body("data.findAll{it.avatar.startsWith('https://reqres.in')}.avatar.flatten()",
+                                hasItem("https://reqres.in/img/faces/10-image.jpg")));
     }
 }
